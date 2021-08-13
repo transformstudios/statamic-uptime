@@ -10,7 +10,6 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Statamic\Facades\Entry;
-use Statamic\Facades\User;
 use Statamic\Support\Arr;
 use TransformStudios\Uptime\Notifications\AlertCleared;
 
@@ -121,7 +120,7 @@ class WebhookController extends Controller
             return response()->noContent();
         }
 
-        if (! $users = collect($site->augmentedValue('users'))->map(fn (string $id) => User::find($id))) {
+        if (! $users = $site->augmentedValue('users')->value()) {
             return response()->noContent();
         }
 
