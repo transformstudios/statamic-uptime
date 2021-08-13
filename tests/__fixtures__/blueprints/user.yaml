@@ -1,0 +1,29 @@
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: email
+        field:
+          type: text
+          display: 'Email address'
+          width: 33
+      -
+        handle: roles
+        field:
+          type: user_roles
+          width: 33
+      -
+        handle: name
+        field:
+          type: text
+          display: 'Name'
+          width: 33
+          listable: true
+          input_type: text
+          antlers: false
+      -
+        handle: content
+        field:
+          type: textarea
+          display: Biography
