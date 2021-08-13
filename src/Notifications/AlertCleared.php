@@ -3,8 +3,6 @@
 namespace TransformStudios\Uptime\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use TransformStudios\Front\Notifications\Channel\Message;
 
@@ -31,7 +29,7 @@ class AlertCleared extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return \TransformStudios\Front\Notifications\Channel\Message
      */
     public function toFront($notifiable)
     {
