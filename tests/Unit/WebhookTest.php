@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Notification;
 use Statamic\Entries\Collection;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Entry;
-use Statamic\Facades\File;
 use Statamic\Facades\User;
-use Statamic\Facades\YAML;
 use TransformStudios\Uptime\Notifications\AlertCleared;
 use TransformStudios\Uptime\Tests\TestCase;
 
@@ -70,36 +68,15 @@ class WebhookTest extends TestCase
             'event' => 'alert_cleared',
         ];
 
-        $user = User::make()->email('foo@bar.com');
+        $user = User::make()
+            ->email('foo@bar.com')
+            ->save();
 
-        $user->save();
+        Blueprint::setDirectory(__DIR__.'/../__fixtures__/blueprints/');
 
-        $blueprint = Blueprint::makeFromFields(YAML::file(__DIR__.'/../__fixtures__/blueprints/sites.yaml')->parse())
-            ->setHandle('sites');
-        $userBlueprint = Blueprint::makeFromFields(YAML::file(__DIR__.'/../__fixtures__/blueprints/user.yaml')->parse())
-            ->setHandle('user');
-        Blueprint::shouldReceive('in')->with('collections/sites')->andReturn(collect(['sites' => $blueprint]));
-        Blueprint::shouldReceive('in')->with('users')->andReturn(collect(['user' => $userBlueprint]));
+        (new Collection)->handle('sites')->save();
 
-        // Blueprint::setDirectory(__DIR__.'/../__fixtures__/blueprints/');
-        // // $blueprint = Blueprint::make('sites')
-        // //     ->setContents(YAML::file(__DIR__.'/../__fixtures__/blueprints/sites.yaml')->parse());
-
-        // // $blueprint->save();
-
-        // copy(
-        //     __DIR__.'/../__fixtures__/blueprints/sites.yaml',
-        //     '../__fixtures__/blueprints/collections/sites/sites.yaml'
-        // );
-        // dd('what');
-        $collection = (new Collection)
-            ->handle('sites');
-        // ->entryBlueprint('sites');
-
-        $collection->save();
-
-        /** @var \Statamic\Entries\Entry */
-        $entry = Entry::make()
+        Entry::make()
             ->collection('sites')
             ->in('default')
             ->set('title', 'Test Site')
