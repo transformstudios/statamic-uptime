@@ -33,10 +33,6 @@
                 "TransformStudios\\Uptime\\ServiceProvider"
             ]
         },
-        "patches": {
-            "statamic/cms": {
-                "Add getKey to User": "patches/4122.diff"
-            }
-        }
+        "patches": {}
     }
 }
