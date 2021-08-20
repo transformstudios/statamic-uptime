@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Statamic\Facades\Entry;
 use Statamic\Support\Arr;
 use TransformStudios\Uptime\Notifications\AlertCleared;
+use TransformStudios\Uptime\Notifications\AlertRaised;
 
 class WebhookController extends Controller
 {
@@ -108,6 +109,11 @@ class WebhookController extends Controller
     private function handleAlertCleared(array $payload)
     {
         return $this->handleAlert(AlertCleared::class, $payload);
+    }
+
+    private function handleAlertRaised(array $payload)
+    {
+        return $this->handleAlert(AlertRaised::class, $payload);
     }
 
     private function handleAlert($notificationClass, $payload)

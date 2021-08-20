@@ -8,6 +8,7 @@ use Statamic\Facades\Blueprint;
 use Statamic\Facades\Entry;
 use Statamic\Facades\User;
 use TransformStudios\Uptime\Notifications\AlertCleared;
+use TransformStudios\Uptime\Notifications\AlertRaised;
 use TransformStudios\Uptime\Tests\TestCase;
 
 class WebhookTest extends TestCase
@@ -90,5 +91,43 @@ class WebhookTest extends TestCase
             ->assertOk();
 
         Notification::assertTimesSent(1, AlertCleared::class);
+    }
+
+    /** @test */
+    public function sends_alert_raised_notification()
+    {
+        $data = [
+            'data' => [
+                'service' => [
+                    'tags' => [
+                        'foo',
+                    ],
+                ],
+            ],
+            'event' => 'alert_raised',
+        ];
+
+        $user = User::make()
+            ->email('foo@bar.com')
+            ->save();
+
+        Blueprint::setDirectory(__DIR__.'/../__fixtures__/blueprints/');
+
+        (new Collection)->handle('sites')->save();
+
+        Entry::make()
+            ->collection('sites')
+            ->in('default')
+            ->set('title', 'Test Site')
+            ->set('uptime_tag', 'foo')
+            ->set('users', [$user->id()])
+            ->save();
+
+        Notification::fake();
+
+        $this->post(route('statamic.uptime.webhook'), $data)
+            ->assertOk();
+
+        Notification::assertTimesSent(1, AlertRaised::class);
     }
 }
