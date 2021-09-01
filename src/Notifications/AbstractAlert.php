@@ -34,13 +34,12 @@ abstract class AbstractAlert extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'event' => $this->event,
             'date' => Arr::get($this->alert, 'date'),
             'is_up' => Arr::get($this->alert, 'alert.is_up'),
-            'locations' =>Arr::get($this->alert, 'locations'),
             'output' => Arr::get($this->alert, 'alert.short_output'),
             'subject' => $this->subject,
             'test' => Arr::get($this->alert, 'service.name'),
