@@ -45,7 +45,7 @@ class WebhookController extends Controller
             return response()->noContent();
         }
 
-        if (! $site = Entry::query()->where('collection', 'sites')->where('uptime_tag', $tag)->first()) {
+        if (! $site = Entry::query()->where('collection', 'sites')->where('published', true)->where('uptime_tag', $tag)->first()) {
             return response()->noContent();
         }
 
