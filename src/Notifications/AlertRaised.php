@@ -14,7 +14,7 @@ class AlertRaised extends AbstractAlert
         return array_merge(
             parent::toArray(),
             [
-                'locations' => implode(',', Arr::get($this->alert, 'locations')),
+                'locations' => implode(',', Arr::get($this->alert, 'locations', [])),
             ]
         );
     }
