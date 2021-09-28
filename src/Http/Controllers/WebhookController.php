@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -53,7 +54,7 @@ class WebhookController extends Controller
             return response()->noContent();
         }
 
-        Notification::send($users, new $notificationClass($payload));
+        (new AnonymousNotifiable)->notify(new $notificationClass($payload, $users));
 
         return response('Webhook handled');
     }

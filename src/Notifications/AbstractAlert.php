@@ -13,7 +13,7 @@ abstract class AbstractAlert extends Notification
     protected string $event;
     protected string $subject;
 
-    public function __construct(protected $alert = [])
+    public function __construct(protected $alert, protected $users)
     {
     }
 
@@ -39,11 +39,13 @@ abstract class AbstractAlert extends Notification
         return [
             'event' => $this->event,
             'date' => Arr::get($this->alert, 'date'),
+            'id' => Arr::get($this->alert, 'service.id'),
             'is_up' => Arr::get($this->alert, 'alert.is_up'),
             'output' => Arr::get($this->alert, 'alert.short_output'),
             'subject' => $this->subject,
             'test' => Arr::get($this->alert, 'service.name'),
             'type' => Arr::get($this->alert, 'service.monitoring_service_type'),
+            'users' => $this->users,
         ];
     }
 }
