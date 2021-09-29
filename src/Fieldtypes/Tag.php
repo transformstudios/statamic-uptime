@@ -13,7 +13,7 @@ class Tag extends Relationship
     public function getIndexItems($request)
     {
         $response = Http::withToken(config('uptime.api_key'), 'Token')
-            ->get('https://uptime.com/api/v1/check-tags/');
+            ->get('https://uptime.com/api/v1/check-tags?page_size=1000');
 
         return collect(Arr::get($response->json(), 'results'))
             ->map(fn (array $tagData) => ['id' => $tagData['tag'], 'title' => $tagData['tag']])
