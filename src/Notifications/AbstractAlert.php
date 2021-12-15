@@ -3,10 +3,11 @@
 namespace TransformStudios\Uptime\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Statamic\Support\Arr;
 
-abstract class AbstractAlert extends Notification
+abstract class AbstractAlert extends Notification implements ShouldQueue
 {
     use Queueable;
 
