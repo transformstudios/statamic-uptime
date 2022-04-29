@@ -8,7 +8,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Statamic\Facades\Entry;
 use Statamic\Support\Arr;
@@ -50,7 +49,7 @@ class WebhookController extends Controller
             return response()->noContent();
         }
 
-        if (! $users = $site->augmentedValue('users')->value()) {
+        if ($site->users->isEmpty()) {
             return response()->noContent();
         }
 
