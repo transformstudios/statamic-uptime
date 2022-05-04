@@ -53,7 +53,7 @@ class WebhookController extends Controller
             return response()->noContent();
         }
 
-        (new AnonymousNotifiable)->notify(new $notificationClass($payload, $users));
+        (new AnonymousNotifiable)->notify(new $notificationClass($payload, $site->users));
 
         return response('Webhook handled');
     }
