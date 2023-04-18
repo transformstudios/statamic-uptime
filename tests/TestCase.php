@@ -45,7 +45,7 @@ class TestCase extends OrchestraTestCase
         $app->make(Manifest::class)->manifest = [
             'transformstudios/uptime' => [
                 'id' => 'transformstudios/uptime',
-                'namespace' => 'TransformStudios\\Uptime\\',
+                'namespace' => 'TransformStudios\\Uptime',
             ],
         ];
     }
@@ -57,7 +57,7 @@ class TestCase extends OrchestraTestCase
         $configs = ['assets', 'cp', 'forms', 'routes', 'static_caching', 'sites', 'stache', 'system', 'users'];
 
         foreach ($configs as $config) {
-            $app['config']->set("statamic.$config", require __DIR__ . "/../vendor/statamic/cms/config/{$config}.php");
+            $app['config']->set("statamic.$config", require __DIR__."/../vendor/statamic/cms/config/{$config}.php");
         }
 
         // Setting the user repository to the default flat file system
