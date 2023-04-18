@@ -61,6 +61,7 @@ class WebhookTest extends TestCase
         $data = [
             'data' => [
                 'service' => [
+                    'id' => 123,
                     'tags' => [
                         'foo',
                     ],
