@@ -3,23 +3,29 @@
 namespace TransformStudios\Uptime\Notifications;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Statamic\Support\Arr;
 
 class AlertCleared extends AbstractAlert
 {
-    protected string $event = 'alert_cleared';
-    protected string $subject = 'Monitor Alert: Alert Cleared';
-
-    public function toArray(): array
+    public function __construct(array $payload, Collection $users)
     {
-        $startedAt = Carbon::parse(Arr::get($this->alert, 'downtime.started_at'));
-        $endedAt = Carbon::parse(Arr::get($this->alert, 'downtime.ended_at'));
+        parent::__construct(
+            subject: 'Monitor Alert: Alert Cleared',
+            payload: $payload,
+            template: 'alert_cleared',
+            users: $users
+        );
+    }
 
-        return array_merge(
-            parent::toArray(),
-            [
-                'duration' => $endedAt->diffForHumans($startedAt, Carbon::DIFF_ABSOLUTE, false, 3),
-            ]
+    protected function data(array $payload, array $additionalData = []): array
+    {
+        $startedAt = Carbon::parse(Arr::get($payload, 'downtime.started_at'));
+        $endedAt = Carbon::parse(Arr::get($payload, 'downtime.ended_at'));
+
+        return parent::data(
+            $payload,
+            ['duration' => $endedAt->diffForHumans($startedAt, Carbon::DIFF_ABSOLUTE, false, 3)]
         );
     }
 }
