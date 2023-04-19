@@ -14,4 +14,15 @@ class ServiceProvider extends AddonServiceProvider
     protected $fieldtypes = [
         Tag::class,
     ];
+
+    public function bootAddon()
+    {
+        // needed for testing but not production
+        if (app()->environment('testing')) {
+            $this->loadViewsFrom(
+                __DIR__.'/../resources/views',
+                'uptime'
+            );
+        }
+    }
 }

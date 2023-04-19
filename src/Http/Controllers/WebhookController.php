@@ -20,7 +20,7 @@ class WebhookController extends Controller
 
     public function __invoke(Request $request)
     {
-        $method = 'handle' . Str::studly(str_replace('.', '_', $request->input('event')));
+        $method = 'handle'.Str::studly(str_replace('.', '_', $request->input('event')));
 
         if (method_exists($this, $method)) {
             return $this->{$method}($request->input('data'));
@@ -39,7 +39,7 @@ class WebhookController extends Controller
         return $this->handleAlert(AlertRaised::class, $payload);
     }
 
-    private function handleAlert($notificationClass, $payload)
+    private function handleAlert(string $notificationClass, array $payload)
     {
         if (! $tag = Arr::get($payload, 'service.tags.0')) {
             return response()->noContent();

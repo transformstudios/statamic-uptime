@@ -2,51 +2,33 @@
 
 namespace TransformStudios\Uptime\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Notification;
+use Illuminate\Support\Collection;
 use Statamic\Support\Arr;
+use TransformStudios\Front\Notifications\BaseNotification;
 
-abstract class AbstractAlert extends Notification implements ShouldQueue
+abstract class AbstractAlert extends BaseNotification
 {
-    use Queueable;
-
-    protected string $event;
-    protected string $subject;
-
-    public function __construct(protected $alert, protected $users)
+    public function __construct(string $subject, array $payload, string $template, Collection $users)
     {
+        parent::__construct(
+            Arr::get($payload, 'service.id'),
+            $subject,
+            view("uptime::$template", $this->data($payload))->render(),
+            $users,
+        );
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    protected function data(array $payload, array $additionalData = []): array
     {
-        return ['front'];
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return [
-            'event' => $this->event,
-            'date' => Arr::get($this->alert, 'date'),
-            'id' => Arr::get($this->alert, 'service.id'),
-            'is_up' => Arr::get($this->alert, 'alert.is_up'),
-            'output' => Arr::get($this->alert, 'alert.short_output'),
-            'subject' => $this->subject,
-            'test' => Arr::get($this->alert, 'service.name'),
-            'type' => Arr::get($this->alert, 'service.monitoring_service_type'),
-            'users' => $this->users,
-        ];
+        return array_merge(
+            [
+                'date' => Arr::get($payload, 'date'),
+                'is_up' => Arr::get($payload, 'alert.is_up'),
+                'output' => Arr::get($payload, 'alert.short_output'),
+                'test' => Arr::get($payload, 'service.name'),
+                'type' => Arr::get($payload, 'service.monitoring_service_type'),
+            ],
+            $additionalData,
+        );
     }
 }
