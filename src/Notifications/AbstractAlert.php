@@ -16,18 +16,6 @@ abstract class AbstractAlert extends BaseNotification
             view("uptime::$template", $this->data($payload))->render(),
             $users,
         );
-
-    }
-
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['front'];
     }
 
     protected function data(array $payload, array $additionalData = []): array
