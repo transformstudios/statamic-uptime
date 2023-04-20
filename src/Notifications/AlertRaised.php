@@ -7,10 +7,6 @@ use Statamic\Support\Arr;
 
 class AlertRaised extends AbstractAlert
 {
-    protected string $event = 'alert_raised';
-
-    protected string $subject = 'Monitor Alert: Error Detected';
-
     public function __construct(array $payload, Collection $users)
     {
         parent::__construct(
