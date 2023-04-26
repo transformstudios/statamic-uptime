@@ -7,12 +7,16 @@ use TransformStudios\Uptime\Fieldtypes\Tag;
 
 class ServiceProvider extends AddonServiceProvider
 {
+    protected $fieldtypes = [
+        Tag::class,
+    ];
+
     protected $routes = [
         'actions' => __DIR__.'/../routes/actions.php',
     ];
 
-    protected $fieldtypes = [
-        Tag::class,
+    protected $tags = [
+        Tags::class,
     ];
 
     public function bootAddon()
